@@ -6,40 +6,55 @@ Description
 ----
 The __LaZagne project__ is an open source application used to __retrieve lots of passwords__ stored on a local computer. 
 Each software stores its passwords using different techniques (plaintext, APIs, custom algorithms, databases, etc.). This tool has been developed for the purpose of finding these passwords for the most commonly-used software. 
-At this moment, it supports 22 Programs on Microsoft Windows and 12 on a Linux/Unix-Like OS.
 
 <p align="center"><img src="./pictures/lazagne.png" alt="The LaZagne project"></p>
 
 Standalones
 ----
-Standalones are now available here: https://github.com/AlessandroZ/LaZagne/releases/tag/0.9
+Standalones are now available here: https://github.com/AlessandroZ/LaZagne/releases/
 
 Usage
 ----
 * Retrieve version
-	* cmd: laZagne.exe --version
+```
+laZagne.exe --version
+```
 
 * Launch all modules
-	* cmd: laZagne.exe all
+```
+laZagne.exe all
+```
 
 * Launch only a specific module
-	* cmd: laZagne.exe <module_name>
-	* example: laZagne.exe browsers
-	* help: laZagne.exe -h
+```
+laZagne.exe browsers
+```
 
 * Launch only a specific software script
-	* cmd: laZagne.exe <module_name> <software>
-	* example: laZagne.exe browsers -f
-	* help: laZagne.exe browsers -h
+```
+laZagne.exe browsers -f (for firefox)
+```
 
-* Write all passwords found into a file (-w options)
-	* cmd: laZagne.exe all -w
+* Write all passwords found into a file (-oN for Normal txt, -oJ for Json, -oA for All)
+```
+laZagne.exe all -oN
+```
 
-* Use a file for dictionary attacks (used only when it's necessary: mozilla masterpassword, system hahes, etc.). The file has to be a wordlist in cleartext (no rainbow), it has not been optmized to be fast but could useful for basic passwords. 
-	* cmd: laZagne.exe all -path file.txt
+* Get help
+```
+laZagne.exe -h
+laZagne.exe browsers -h
+```
+
+* Use a file for dictionary attacks (used only when it's necessary: mozilla masterpassword, system hahes, etc.). The file has to be a wordlist in cleartext (no rainbow), it has not been optmized to be fast but could useful for basic passwords.
+```
+laZagne.exe all -path file.txt
+```
 
 * Change verbosity mode (2 different levels)
-	* cmd: laZagne.exe all -vv
+```
+laZagne.exe all -vv
+```
 
 __Note: For wifi passwords \ Windows Secrets, launch it with administrator privileges (UAC Authentication / sudo)__
 
@@ -50,14 +65,13 @@ Supported software
 
 (*) used by many tools to store passwords: Chrome, Owncloud, Evolution, KMail, etc.
 
-IE Browser history
+User impersonnation
 ----
-Internet Explorer passwords (from IE7 and before Windows 8) can only be decrypted using the URL of the website. This one is used as an argument of the Win32CryptUnprotectData api. Thus, using the browsing history of ie will permit to decrypt many passwords. 
-To do that, I used a dll written in C code (the code is in the "browser_history_dll" directory) and it is directly embedded to the Python code as a Base64 string (c.f. ie.py). Once launched, the dll is written on the disk, a wrapper is used to call dll functions and then the dll file is removed from the disk.
+When laZagne is launched with admin privileges (UAC bypassed) or System, it manages to retrieve passwords from other users. It uses two ways to do that: 
 
-Windows hashes
-----
-To dump windows hashes and LSA Secrets, the impacket library has been used: https://github.com/CoreSecurity/impacket
+* If a process from another user is launched (using runas or if many users are connected to the same host), it manages to steal a process token to launch laZagne with its privileges (this is the best way). It could retrieve passwords stored encrypted with the Windows API. 
+	
+* If no process has been launched but other user exists (visible on the file system in C:\Users\...), it browses the file system in order to retrieve passwords from these users. However, it could not retrieve passwords encrypted with the Windows API (we have to be on the same context as the user to decrypt these passwords). Only few passwords could be retrieved (Firefox, Jitsi, Dbvis, etc.).
 
 Build your own password recovery script
 ----
@@ -70,8 +84,8 @@ To do that, some code standards are to be met:
 
 * Add on the config.manageModules.py file your class name and your import
 
-* The output containing all passwords has to be send to the "print_output" function - ex: print_output(software_name, password_list)
-	* password_list has to be an array of dictionnaries. 
+* The run function has to return an array of dictionnaries
+	* ex: [{"Username": "emiliano", "Password":"ZapaTa", "URL": "http://mail.com"}]
 
 * Optional: you could use the function "print_debug" to print your output 
 	* ex: print_debug("ERROR", "Failed to load ...")
@@ -91,21 +105,19 @@ To compile the source code, some external libraries are required.
 	* PyCrypto: pip install pycrypto
 	* Impacket (for Windows hashes + LSA Secrets): https://github.com/CoreSecurity/impacket
 	* Pyasn1 (for ASN1 decoding): https://pypi.python.org/pypi/pyasn1/
+	* Microsoft Visual C++ 2010 Redistributable Package (x86): https://www.microsoft.com/en-us/download/details.aspx?id=5555
 
 * For Linux	
 	* Python 2.7
 	* Argparse
 	* PyCrypto: https://www.dlitz.net/software/pycrypto/
 	* Dbus (Pidgin)
-	* Python-kde4 (Kwallet)
 	* Pyasn1 (for ASN1 decoding): https://pypi.python.org/pypi/pyasn1/
+	* Python Gnome keyring: apt-get install python-gnomekeyring
+	* Python-kde4 (Kwallet): apt-get install python-kde4
 
 ----
 | __Alessandro ZANNI__    |
 | ------------- |
-| __alessandro.zanni@bt.com__    |
 | __zanni.alessandro@gmail.com__  |
-
-
- 
 

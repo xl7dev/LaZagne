@@ -1,3 +1,56 @@
+LaZagne 1.7 (15/11/2016)
+- Only Windows:
+	* Lots of minor bugs fixed
+		* Firefox
+			* when many profiles used (thanks to Aorimn) or when profiles.ini is corrupted
+		* IE: retrieving historic list or windows vault
+		* Writing json file
+		* etc...
+
+LaZagne 1.7 (11/09/2016)
+- Only Windows:
+	* New modules (thanks to righettod => https://github.com/righettod): 
+		* Robomongo - MongoDB client
+	* Internet Explorer bug fix (for windows 7)
+
+LaZagne 1.6 (05/09/2016)
+- Only Windows:
+	* Internet Explorer history retrieved using powershell - no more dll written on the disk (all in memory)
+	* Internet Explorer passwords stored in the credential manager retrieved (for Win8 and higher)
+	* Wifi bug fixed
+
+LaZagne 1.5 (01/08/2016)
+- Only Windows:
+	* New modules (thanks to righettod => https://github.com/righettod): 
+		* Maven java build tool 
+		* Apache Directory Studio 
+		* "OpenSSH" application
+
+LaZagne 1.4 (21/07/2016)
+- Only Windows:
+	* New module: Git for Windows (thanks to righettod => https://github.com/righettod)
+
+LaZagne 1.3 (02/07/2016)
+- Only Windows
+See "User impersonnation" in README for more information
+	* User impersonation (high privileges needed)
+		* Stealing user process token (when other user processes are running on the system)
+			* All credentials can be retrieved (Chrome, Firefox, etc.)
+		* Browsing file system (ex: C:\Users\<user>\...) 
+			* Only software's passwords which do not use Windows API to encrypt it, can be retrieved (Firefox, Jitsi, Pidgin, etc.). 
+	* Json output has been implemented (txt output is still present with the options -oN)
+		* Lazagne all -oJ => Json output
+	* Standalone lighter (from 18 Mo to 6 Mo) => Thanks to the new version of Pyinstaller
+	* Fix some bugs
+
+LaZagne 1.1 (22/10/2015)
+- Only Windows
+	* New category: games (Thanks to David Lodge)
+		* Galcon Fusion 
+		* Kalypso Media Launcher
+		* Rogue's Tale
+		* Turba
+
 LaZagne 1.0 (04/10/2015)
 - Only Windows
 	* Fix chrome database locked
@@ -6,7 +59,6 @@ LaZagne 1.0 (04/10/2015)
 
 - For Linux
 	* Fix opera bug
-
 
 LaZagne 0.9.1 (09/07/2015)
 - Only Windows
